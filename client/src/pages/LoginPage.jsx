@@ -22,6 +22,16 @@ export default function LoginPage() {
       console.log(error);
     }
   }
+
+   async function handleSwitch(e) {
+    e.preventDefault();
+    try {
+      navigate("/auth/register");
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center">
       <div className="w-full max-w-xs">
@@ -61,12 +71,16 @@ export default function LoginPage() {
               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
             />
           </div>
-          <button
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-          >
+          <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
             Login
           </button>
         </form>
+        <p className="text-sm text-center">
+          Belum punya akun?{" "}
+          <p onClick={handleSwitch} className="text-blue-500 hover:underline cursor-pointer">
+            Register di sini
+          </p>
+        </p>
       </div>
     </div>
   );

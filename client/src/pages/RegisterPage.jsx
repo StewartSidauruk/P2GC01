@@ -25,6 +25,17 @@ export default function RegisterPage() {
     }
   }
 
+  async function handleSwitch(e) {
+    e.preventDefault();
+    try {
+      navigate("/auth/login");
+    } catch (error) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log(errorCode, "-", errorMessage);
+    }
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center">
       <div className="w-full max-w-xs">
@@ -68,6 +79,12 @@ export default function RegisterPage() {
             Register
           </button>
         </form>
+        <p className="text-sm text-center">
+        Sudah punya akun?{" "}
+        <p onClick={handleSwitch} className="text-blue-500 hover:underline cursor-pointer">
+          Login di sini
+        </p>
+      </p>
       </div>
     </div>
   );
