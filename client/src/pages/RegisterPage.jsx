@@ -6,10 +6,38 @@ import { useNavigate } from "react-router";
 export default function RegisterPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [firebaseError, setFirebaseError] = useState("");
   const navigate = useNavigate();
 
   async function handleRegister(e) {
     e.preventDefault();
+
+    setEmailError("");
+    setPasswordError("");
+    setFirebaseError("");
+
+    let isValid = true;
+
+    if (!email) {
+      setEmailError("Email tidak boleh kosong");
+      isValid = false;
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      setEmailError("Format email tidak valid");
+      isValid = false;
+    }
+
+    if (!password) {
+      setPasswordError("Password tidak boleh kosong");
+      isValid = false;
+    } else if (password.length < 6) {
+      setPasswordError("Password minimal 6 karakter");
+      isValid = false;
+    }
+
+    if (!isValid) return;
+
     try {
       const userRegistered = await createUserWithEmailAndPassword(
         auth,
@@ -19,9 +47,12 @@ export default function RegisterPage() {
       console.log(userRegistered);
       navigate("/");
     } catch (error) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log(errorCode, "-", errorMessage);
+      console.log(error.code, "-", error.message);
+      if (error.code === "auth/email-already-in-use") {
+        setFirebaseError("Email sudah digunakan");
+      } else {
+        setFirebaseError("Gagal mendaftar, coba lagi");
+      }
     }
   }
 
@@ -37,54 +68,70 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="w-full max-w-xs">
-        <h1>Register Page</h1>
+        <h1 className="text-2xl font-bold mb-6 text-center">Register Page</h1>
         <form
           onSubmit={handleRegister}
-          action=""
-          class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+          className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
         >
-          <div>
-            <label
-              htmlFor=""
-              class="block text-gray-700 text-sm font-bold mb-2"
-            >
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2">
               Email
             </label>
-            <br />
             <input
               type="text"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
+                emailError ? "border-red-500" : ""
+              }`}
             />
+            {emailError && (
+              <p className="text-red-500 text-xs mt-1">{emailError}</p>
+            )}
           </div>
-          <div>
-            <label
-              htmlFor=""
-              class="block text-gray-700 text-sm font-bold mb-2"
-            >
+
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2">
               Password
             </label>
-            <br />
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+              className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
+                passwordError ? "border-red-500" : ""
+              }`}
             />
+            {passwordError && (
+              <p className="text-red-500 text-xs mt-1">{passwordError}</p>
+            )}
           </div>
-          <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+
+          {firebaseError && (
+            <p className="text-red-600 text-sm text-center mb-3">
+              {firebaseError}
+            </p>
+          )}
+
+          <button
+            type="submit"
+            className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          >
             Register
           </button>
         </form>
+
         <p className="text-sm text-center">
-        Sudah punya akun?{" "}
-        <p onClick={handleSwitch} className="text-blue-500 hover:underline cursor-pointer">
-          Login di sini
+          Sudah punya akun?{" "}
+          <span
+            onClick={handleSwitch}
+            className="text-blue-500 hover:underline cursor-pointer"
+          >
+            Login di sini
+          </span>
         </p>
-      </p>
       </div>
     </div>
   );
