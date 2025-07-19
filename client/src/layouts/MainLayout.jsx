@@ -1,18 +1,15 @@
-import { useEffect } from 'react';
-import { onAuthStateChanged } from 'firebase/auth';
+import { useContext, useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router';
-import { auth } from '../configs/firebase';
+import { AuthContext } from '../contexts/AuthContext';
 
 export default function MainLayout() {
+  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
-
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      console.log(user);
-      if (!user) {
-        navigate('/auth/login');
-      }
-    });
+    console.log(user);
+    if (!user) {
+      navigate('/auth/login');
+    }
   }, []);
 
   return (
