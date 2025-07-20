@@ -9,6 +9,8 @@ export default function RegisterPage() {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [firebaseError, setFirebaseError] = useState("");
+  const [agreeTnC, setAgreeTnC] = useState(false);
+  const [tncError, setTncError] = useState("");
   const navigate = useNavigate();
 
   async function handleRegister(e) {
@@ -17,6 +19,7 @@ export default function RegisterPage() {
     setEmailError("");
     setPasswordError("");
     setFirebaseError("");
+    setTncError("");
 
     let isValid = true;
 
@@ -33,6 +36,11 @@ export default function RegisterPage() {
       isValid = false;
     } else if (password.length < 6) {
       setPasswordError("Password minimal 6 karakter");
+      isValid = false;
+    }
+
+    if (!agreeTnC) {
+      setTncError("Anda harus menyetujui Syarat dan Ketentuan");
       isValid = false;
     }
 
@@ -106,6 +114,30 @@ export default function RegisterPage() {
             />
             {passwordError && (
               <p className="text-red-500 text-xs mt-1">{passwordError}</p>
+            )}
+          </div>
+
+          <div className="mb-4">
+            <label className="inline-flex items-center">
+              <input
+                type="checkbox"
+                checked={agreeTnC}
+                onChange={(e) => setAgreeTnC(e.target.checked)}
+                className="form-checkbox h-4 w-4 text-blue-600"
+              />
+              <span className="ml-2 text-sm text-gray-700">
+                Saya menyetujui{" "}
+                <a
+                  href="/terms"
+                  target="_blank"
+                  className="text-blue-500 underline"
+                >
+                  Syarat dan Ketentuan
+                </a>
+              </span>
+            </label>
+            {tncError && (
+              <p className="text-red-500 text-xs mt-1">{tncError}</p>
             )}
           </div>
 
