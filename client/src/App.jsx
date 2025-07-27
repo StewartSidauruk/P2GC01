@@ -6,6 +6,7 @@ import RegisterPage from './pages/RegisterPage';
 import MainLayout from './layouts/MainLayout.jsx';
 import HomePage from './pages/HomePage';
 import AuthContextProvider from './contexts/AuthContext.jsx';
+import AddProductPage from './pages/AddProductPage.jsx';
 
 const router = createBrowserRouter([
   {
@@ -15,6 +16,10 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <HomePage />,
+      },
+      {
+        path: 'products/add',
+        element: <AddProductPage/>
       },
     ],
   },
