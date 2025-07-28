@@ -161,7 +161,7 @@ export default function EditProductPage() {
                     className={`w-full px-4 py-3 border rounded-lg bg-gray-50 mb-2 ${errors.image ? "border-red-500" : "border-gray-300"}`}
                   />
                   <FileUploaderRegular
-                    pubkey="09f4ca2f9a99b00f8848"
+                    pubkey="add784b2978230948eac"
                     onFileUploadSuccess={(result) => {
                       setImage(result.cdnUrl);
                     }}

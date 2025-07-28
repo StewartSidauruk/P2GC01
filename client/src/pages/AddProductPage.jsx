@@ -231,7 +231,7 @@ export default function AddProductPage() {
                     }`}
                   />
                   <FileUploaderRegular
-                    pubkey="09f4ca2f9a99b00f8848"
+                    pubkey="add784b2978230948eac"
                     onFileUploadSuccess={(result) => {
                       console.log("Successfully uploaded file");
                       setImage(result.cdnUrl);
