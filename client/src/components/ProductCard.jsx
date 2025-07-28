@@ -44,7 +44,7 @@ export default function ProductCard({ product, onEdit, onDelete }) {
         <div className="flex items-center justify-between mb-4">
           <div>
             <span className="text-2xl font-bold text-gray-900">
-              ${product.price.toLocaleString()}
+              Rp. {product.price.toLocaleString()}
             </span>
           </div>
           <div className="text-right">
@@ -70,7 +70,7 @@ export default function ProductCard({ product, onEdit, onDelete }) {
           </button>
 
           <button
-            onClick={() => onDelete(product.id)}
+            onClick={() => onDelete(product.id, product.name)}
             className="flex-1 bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-lg flex items-center justify-center space-x-1 transition-colors duration-200"
           >
             <Trash2 className="w-4 h-4" />

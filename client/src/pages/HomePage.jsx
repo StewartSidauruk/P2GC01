@@ -8,24 +8,23 @@ import StatsCards from "../components/StatsCards";
 import ProductControls from "../components/ProductControls";
 import ProductCard from "../components/ProductCard";
 import EmptyState from "../components/EmptyState";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchProducts,
+  deleteProduct,
+} from "../redux/features/products/productSlice";
+import Swal from "sweetalert2";
 
 export default function HomePage() {
-  const [products, setProducts] = useState([]);
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const { products, isLoading, error } = useSelector((state) => state.product);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    async function getProducts() {
-      const querySnapshot = await getDocs(collection(db, "products"));
-      const result = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setProducts(result);
-    }
-    getProducts();
-  }, []);
+    dispatch(fetchProducts());
+  }, [dispatch]);
 
   const categories = [
     "all",
@@ -55,9 +54,24 @@ export default function HomePage() {
     return matchesSearch && matchesCategory;
   });
 
-  const handleCreateProduct = () => console.log("Create product clicked");
-  const handleEditProduct = (id) => console.log("Edit product:", id);
-  const handleDeleteProduct = (id) => console.log("Delete product:", id);
+  const handleCreateProduct = () => navigate("/products/add");
+  const handleEditProduct = (id) => navigate(`/products/edit/${id}`);
+  const handleDeleteProduct = (id, productName) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: `You won't be able to revert deleting "${productName}"!`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(deleteProduct(id));
+        Swal.fire("Deleted!", "The product has been deleted.", "success");
+      }
+    });
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">

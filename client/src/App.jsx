@@ -7,6 +7,7 @@ import MainLayout from './layouts/MainLayout.jsx';
 import HomePage from './pages/HomePage';
 import AuthContextProvider from './contexts/AuthContext.jsx';
 import AddProductPage from './pages/AddProductPage.jsx';
+import EditProductPage from './pages/EditProductPage.jsx';
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
       {
         path: 'products/add',
         element: <AddProductPage/>
+      },
+      {
+        path: 'products/edit/:id',
+        element: <EditProductPage />,
       },
     ],
   },

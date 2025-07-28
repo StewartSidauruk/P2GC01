@@ -1,4 +1,5 @@
 import { Filter, Search, Plus } from "lucide-react";
+import { useNavigate } from "react-router";
 
 export default function ProductControls({
   searchTerm,
@@ -6,8 +7,8 @@ export default function ProductControls({
   selectedCategory,
   setSelectedCategory,
   categories,
-  handleCreateProduct,
 }) {
+  const navigate = useNavigate();
   return (
     <div className="bg-white p-6 rounded-lg shadow-sm border mb-6">
       <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
@@ -45,7 +46,7 @@ export default function ProductControls({
 
         {/* Add Product Button */}
         <button
-          onClick={handleCreateProduct}
+          onClick={() => navigate("products/add")}
           className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors duration-200"
         >
           <Plus className="w-4 h-4" />
